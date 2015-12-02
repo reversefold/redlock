@@ -9,24 +9,24 @@ try:
     with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
         long_description = f.read()
 except (OSError, IOError) as e:
-    # We use markdown for documentation. The restructured Text version 
+    # We use markdown for documentation. The restructured Text version
     # is only used for pypi.
     long_description = ""
 
 
 setup(
-    name='redlock',
+    name='redlock-rf',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
     version='1.2.0',
 
-    description='Distributed locks with Redis',
+    description='Distributed locks with Redis, forked by reversefold',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/glasslion/redlock',
+    url='https://github.com/reversefold/redlock',
 
     # Author details
     author='Leonardo Zhou',
