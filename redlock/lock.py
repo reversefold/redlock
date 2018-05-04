@@ -79,12 +79,14 @@ class RedLock(object):
                  retry_times=DEFAULT_RETRY_TIMES,
                  retry_delay=DEFAULT_RETRY_DELAY,
                  ttl=DEFAULT_TTL,
-                 created_by_factory=False):
+                 created_by_factory=False,
+                 lock_key_override=None):
 
         self.resource = resource
         self.retry_times = retry_times
         self.retry_delay = retry_delay
         self.ttl = ttl
+        self.lock_key_override = lock_key_override
 
         if created_by_factory:
             self.factory = None
@@ -157,8 +159,11 @@ class RedLock(object):
 
     def _acquire(self):
 
-        # lock_key should be random and unique
-        self.lock_key = uuid.uuid4().hex
+        if self.lock_key_override is not None:
+            self.lock_key = self.lock_key_override
+        else:
+            # lock_key should be random and unique
+            self.lock_key = uuid.uuid4().hex
 
         for retry in range(self.retry_times + 1):
             acquired_node_count = 0
@@ -187,6 +192,8 @@ class RedLock(object):
         return False, 0
 
     def release(self):
+        if self.lock_key_override is not None:
+            self.lock_key = self.lock_key_override
         for node in self.redis_nodes:
             self.release_node(node)
 
